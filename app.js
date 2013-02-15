@@ -91,32 +91,76 @@ _.initializeSprite = function() {
 
 _.updateChanges = function(data) {
 	this.updateRemoval(JSON.parse(data));
-	//this.updateAddition(JSON.parse(data));
+	this.updateAddition(JSON.parse(data));
 }
 
 _.updateRemoval = function(data) {
 	var jsonData = data,
 		that = this;
 
-	var removedFiles = [];
-
 	fs.readdir(that.targetDirectory, function(err, files) {
 		for(var i = 0; i < jsonData.length; i++) {
 			if(!that.in_array(jsonData[i].fileName, files)) {
-				var convertInput = [];
-
-				jsonData[i].fileName = jsonData[i].fileName.replace(".png", "") + "_removed.png";
-
-				im.convert(convertInput)
+				jsonData[i].fileName = jsonData[i].fileName.replace(".png", "").replace("_removed", "") + "_removed.png";
 			};
 		}
-		console.log(jsonData);
+		fs.writeFile(
+			path.normalize(that.resultantJsonName),
+			JSON.stringify(jsonData),
+			'utf-8'
+		);
 	});
 }
 
 _.updateAddition = function(data) {
 	var jsonData = data,
 		that = this;
+
+	var filesInJSON = [];
+
+	for(var i = 0; i < jsonData.length; i++) {
+		filesInJSON.push(jsonData[i].fileName)				
+	}
+
+	fs.readdir(that.targetDirectory, function(err, files) {
+		var	inputDirectory = [],
+			inputTitle = [],
+			jsonContent = [];
+
+		for(var i = 0; i < files.length; i++) {
+			if(!that.in_array(files[i], filesInJSON)) {
+				inputTitle.push(files[i]);
+				inputDirectory.push(that.targetDirectory + "/" + files[i]);
+			};
+		}
+
+		async.mapSeries(inputDirectory, im.identify, function(err, data) {
+			var top = jsonData[jsonData.length-1].top + jsonData[jsonData.length-1].height;
+
+			for(var i = 0; i < data.length; i++) {
+				jsonContent[i] = new KnowreSpriteFile();
+
+				jsonContent[i].fileName = inputTitle[i];
+				jsonContent[i].top = top;
+				jsonContent[i].height = data[i].height;
+				jsonContent[i].width = data[i].width;
+
+				top = top + data[i].height;
+
+				jsonData.push(jsonContent[i]);
+			}
+
+			fs.writeFile(
+				path.normalize(that.resultantJsonName),
+				JSON.stringify(jsonData),
+				'utf-8'
+			);
+		});
+
+
+
+		
+	});
 
 	
 }

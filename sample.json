@@ -1,0 +1,27 @@
+{
+	"filetitle1.png": {
+		"top": 0,
+		"height": 3,
+		"width": 2
+	},
+	"filetitle2.png": {
+		"top": 3,
+		"height": 10,
+		"width": 2
+	},
+	"filetitle3.png": {
+		"top": 13,
+		"height": 3,
+		"width": 2
+	},
+	"filetitle4.png": {
+		"top": 3,
+		"height": 3,
+		"width": 2
+	},
+	"filetitle5.png": {
+		"top": 3,
+		"height": 3,
+		"width": 2
+	}
+}

@@ -107,8 +107,7 @@ _.updateRemoval = function(data) {
 		fs.writeFile(
 			path.normalize(that.resultantJsonName),
 			JSON.stringify(jsonData),
-			'utf-8'
-		);
+			'utf-8');
 	});
 }
 
@@ -153,7 +152,24 @@ _.updateAddition = function(data) {
 			fs.writeFile(
 				path.normalize(that.resultantJsonName),
 				JSON.stringify(jsonData),
-				'utf-8'
+				'utf-8', function() {
+
+
+
+
+
+
+
+					//그림파일 만드는 작업 수행하기
+
+
+
+
+
+
+
+
+				}
 			);
 		});
 
